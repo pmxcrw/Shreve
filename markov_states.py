@@ -57,3 +57,12 @@ class TotalState(BaseState):
 
     def _initial_state(self, initial_price):
         return initial_price, initial_price
+
+
+class CompoundState(BaseState):
+
+    def next_state(self, current_state):
+        pass
+
+    def _initial_state(self, initial_price):
+        pass
