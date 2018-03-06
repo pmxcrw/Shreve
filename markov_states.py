@@ -40,8 +40,10 @@ class SimpleState(BaseState):
 class MaximumState(BaseState):
 
     def next_state(self, current_state):
-        state_up = current_state[0] * self.up, max(current_state[1], current_state[0] * self.up)
-        state_down = current_state[0] * self.down, max(current_state[1], current_state[0] * self.down)
+        asset_up = current_state[0] * self.up
+        asset_down = current_state[0] * self.down
+        state_up = asset_up, max(current_state[1], asset_up)
+        state_down = asset_down, max(current_state[1], asset_down)
         return state_up, state_down
 
     def _initial_state(self, initial_price):
@@ -51,8 +53,10 @@ class MaximumState(BaseState):
 class TotalState(BaseState):
 
     def next_state(self, current_state):
-        state_up = current_state[0] * self.up, current_state[1] + current_state[0] * self.up
-        state_down = current_state[0] * self.down, current_state[1] + current_state[0] * self.down
+        asset_up = current_state[0] * self.up
+        asset_down = current_state[0] * self.down
+        state_up = asset_up, current_state[1] + asset_up
+        state_down = asset_down, current_state[1] + asset_down
         return state_up, state_down
 
     def _initial_state(self, initial_price):

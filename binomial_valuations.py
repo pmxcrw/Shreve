@@ -22,7 +22,9 @@ class EuropeanExerciseBinomialPriceable(object):
         # map between final states and their payoff
         value_dict = {state: self.payoff_terms.payoff(state) for state in final_states}
         # backward induction, calculating the discounted expected future payoff.
+        discounted_p = self.df * self.p
+        discounted_q = self.df * self.q
         for step in range(1, self.num_steps+1):
-            value_dict = {state: self.df * (self.p * value_dict[next_state[0]] + self.q * value_dict[next_state[1]])
+            value_dict = {state: discounted_p * value_dict[next_state[0]] + discounted_q * value_dict[next_state[1]]
                           for (state, next_state) in self.state_tree[-step].items()}
         return list(value_dict.values())[0]
