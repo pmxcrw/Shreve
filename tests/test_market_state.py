@@ -1,14 +1,13 @@
+import numpy as np
+
 from unittest import TestCase
 from market_state import MarketState
 from tests.test_fixtures import mkt_state
 
 
 class TestInit(TestCase):
-    def test_p(self):
-        self.assertEqual(mkt_state.p, 1 / 2)
-
-    def test_q(self):
-        self.assertEqual(mkt_state.q, 1 / 2)
+    def test_probabilities(self):
+        np.allclose(mkt_state.probabilities, [0.5, 0.5])
 
 
 class TestAssert(TestCase):

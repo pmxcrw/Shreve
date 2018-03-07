@@ -1,3 +1,5 @@
+import numpy as np
+
 from abc import ABC, abstractmethod
 from markov_states import SimpleState, MaximumState, TotalState
 
@@ -29,19 +31,16 @@ class VanillaOptionTerms(BaseOptionTerms):
         put_aliases = {"PUT", "P"}
         call_aliases = {"CALL", "C"}
         assert type(put_call) == str
-        put_call = put_call.upper()
-        if put_call in put_aliases:
-            self.put_call = "put"
-        elif put_call in call_aliases:
-            self.put_call = "call"
+        self.put_call = put_call.upper()
+        if self.put_call in put_aliases:
+            self._payoff = lambda state: np.maximum(self.strike - state, 0)
+        elif self.put_call in call_aliases:
+            self._payoff = lambda state: np.maximum(state - self.strike, 0)
         else:
             raise ValueError("put_call type not recognised")
 
     def payoff(self, state):
-        if self.put_call == "put":
-            return max(self.strike - state, 0)
-        else:
-            return max(state - self.strike, 0)
+        return self._payoff(state)
 
     @property
     def _set_markov_state_class(self):

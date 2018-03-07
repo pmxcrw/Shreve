@@ -9,7 +9,7 @@ class TestSimpleState(TestCase):
         expected = [{4: (8, 2)},
                     {2: (4, 1), 8: (16, 4)},
                     {1: (2, 0.5), 4: (8, 2), 16: (32, 8)}]
-        self.assertEqual(expected, SimpleState(mkt_state).state_tree(3))
+        self.assertEqual(expected, SimpleState(mkt_state).state_tree(3).data)
 
 
 class TestMaximumState(TestCase):
@@ -19,7 +19,7 @@ class TestMaximumState(TestCase):
                     {(2, 4): ((4, 4), (1, 4)), (8, 8): ((16, 16), (4, 8))},
                     {(1, 4): ((2, 4), (0.5, 4)), (4, 4): ((8, 8), (2, 4)), (4, 8): ((8, 8), (2, 8)),
                      (16, 16): ((32, 32), (8, 16))}]
-        self.assertEqual(expected, MaximumState(mkt_state).state_tree(3))
+        self.assertEqual(expected, MaximumState(mkt_state).state_tree(3).data)
 
 
 class TestTotalState(TestCase):
@@ -29,4 +29,4 @@ class TestTotalState(TestCase):
                     {(2, 6): ((4, 10), (1, 7)), (8, 12): ((16, 28), (4, 16))},
                     {(1, 7): ((2, 9), (0.5, 7.5)), (4, 10): ((8, 18), (2, 12)), (4, 16): ((8, 24), (2, 18)),
                      (16, 28): ((32, 60), (8, 36))}]
-        self.assertEqual(expected, TotalState(mkt_state).state_tree(3))
+        self.assertEqual(expected, TotalState(mkt_state).state_tree(3).data)
