@@ -10,8 +10,7 @@ class BaseState(ABC):
 
     def state_tree(self, depth):
         state_tree = Tree(self.initial_state, self.next_state)
-        for step in range(depth-1):
-            state_tree.extend()
+        state_tree.extend(depth)
         return state_tree
 
     def next_prices(self, current_price):
@@ -21,7 +20,7 @@ class BaseState(ABC):
         return "{}((initial_state={!r}, jumps={!r})".format(self.__class__.__name__, self.initial_state, self.jumps)
 
     @abstractmethod
-    def next_state(self, current_state):
+    def next_state(self, current_state, depth=0):
         pass
 
     @abstractmethod
@@ -31,7 +30,7 @@ class BaseState(ABC):
 
 class SimpleState(BaseState):
 
-    def next_state(self, current_state):
+    def next_state(self, current_state, depth=0):
         return tuple(self.next_prices(current_state))
 
     def _initial_state(self, initial_price):
@@ -40,7 +39,11 @@ class SimpleState(BaseState):
 
 class MaximumState(BaseState):
 
-    def next_state(self, current_state):
+    def __init__(self, mkt_state, start=0):
+        self.start = start
+        super().__init__(mkt_state)
+
+    def next_state(self, current_state, depth=0):
         next_prices = self.next_prices(current_state[0])
         state_up = next_prices[0], max(current_state[1], next_prices[0])
         state_down = next_prices[1], max(current_state[1], next_prices[1])
@@ -52,7 +55,7 @@ class MaximumState(BaseState):
 
 class TotalState(BaseState):
 
-    def next_state(self, current_state):
+    def next_state(self, current_state, depth=0):
         next_prices = self.next_prices(current_state[0])
         state_up = next_prices[0], current_state[1] + next_prices[0]
         state_down = next_prices[1], current_state[1] + next_prices[1]

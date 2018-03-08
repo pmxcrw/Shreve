@@ -8,6 +8,7 @@ class TestOneStep(TestCase):
     def test_value(self):
         binomial_priceable = EuropeanExerciseBinomialPriceable(one_step_call_terms, mkt_state)
         self.assertAlmostEqual(1.2, binomial_priceable.price)
+        self.assertAlmostEqual(0.5, binomial_priceable.delta)
 
 
 class TestMultiStep(TestCase):
@@ -22,6 +23,7 @@ class TestLookback(TestCase):
     def test_value(self):
         binomial_priceable = EuropeanExerciseBinomialPriceable(lookback_terms, mkt_state)
         self.assertAlmostEqual(1.376, binomial_priceable.price)
+        self.assertAlmostEqual(0.17333333, binomial_priceable.delta)
 
 
 class TestAsian(TestCase):

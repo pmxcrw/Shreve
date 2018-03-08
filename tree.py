@@ -11,6 +11,7 @@ class Tree(object):
     def terminal_states(self):
         return set().union(*(set(states) for states in self.data[-1].values()))
 
-    def extend(self):
-        new_layer = {state: self.next_state(state) for state in self.terminal_states}
-        self.data.extend([new_layer])
+    def extend(self, depth):
+        for step in range(depth - 1):
+            new_layer = {state: self.next_state(state, depth) for state in self.terminal_states}
+            self.data.extend([new_layer])
